@@ -51,6 +51,7 @@ module.exports = function(app) {
              email: req.body.email
          });
          User.get(newUser.name, function (err, user) {
+            console.log("slkjf");
            if (err) {
              req.flash('error', err);
              return res.redirect('/');

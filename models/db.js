@@ -1,5 +1,5 @@
 var mongo = require('mongodb'),
-    db = mongo.Db,
+    Db = mongo.Db,
     Connection = mongo.Connection,
     Server = mongo.Server;
 //本地数据库
@@ -8,4 +8,4 @@ var mongo = require('mongodb'),
 
 // 服务器数据库
 var server = new Server('mongodb://admin:123456@ds023425.mlab.com', 23425, {auto_reconnect: true});
-module.exports = new db('blog', server);
+module.exports = new Db('blog', server, {safe: true});

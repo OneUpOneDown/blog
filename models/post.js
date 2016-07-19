@@ -1,4 +1,5 @@
-var mongodb = require('./db');
+var mongodb = require('mongodb').MongoClient;
+var settings = require('../settings');
        function Post(name, title, post) {
          this.name = name;
          this.title = title;
@@ -21,19 +22,19 @@ var mongodb = require('./db');
              title: this.title,
              post: this.post
          };
-         mongodb.open(function (err, db) {
+         mongodb.connect(settings.url,function (err, db) {
            if (err) {
              return callback(err);
            }
            db.collection('posts', function (err, collection) {
              if (err) {
-               mongodb.close();
+               db.close();
                return callback(err);
              }
              collection.insert(post, {
                safe: true
              }, function (err) {
-               mongodb.close();
+               db.close();
                if (err) {
                  return callback(err);
                }
@@ -43,13 +44,13 @@ var mongodb = require('./db');
          });
        };
        Post.get = function(name, callback) {
-         mongodb.open(function (err, db) {
+         mongodb.connect(settings.url,function (err, db) {
            if (err) {
              return callback(err);
            }
            db.collection('posts', function(err, collection) {
              if (err) {
-               mongodb.close();
+               db.close();
                return callback(err);
              }
              var query = {};
@@ -59,7 +60,7 @@ var mongodb = require('./db');
              collection.find(query).sort({
                time: -1
              }).toArray(function (err, docs) {
-               mongodb.close();
+               db.close();
                if (err) {
                  return callback(err);
                }
