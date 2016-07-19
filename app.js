@@ -21,26 +21,30 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
+
+//本地mongodb数据库配置
 // app.use(session({
 //     secret: settings.cookieSecret,
 //     key: settings.db,
-//     cookie: {maxAge: 1000 * 60 * 60 * 24 * 30},
+//     //cookie: {maxAge: 1000 * 60 * 60 * 24 * 30},
 //     store: new MongoStore({
-//     db: settings.db,
-//     host: settings.host,
-//     port: settings.port
+//         //url: 'mongodb://localhost:27017/test', 
+//         url: 'mongodb://'+settings.host+':'+settings.port+'/'+settings.db, 
+//         maxAge: 300000
 //     })
 // }));
+// 服务器mongolab数据库配置
 app.use(session({
     secret: settings.cookieSecret,
-    key: settings.db,
+    key: 'blog',
     //cookie: {maxAge: 1000 * 60 * 60 * 24 * 30},
     store: new MongoStore({
         //url: 'mongodb://localhost:27017/test', 
-        url: 'mongodb://'+settings.host+':'+settings.port+'/'+settings.db, 
+        url: settings.url, 
         maxAge: 300000
     })
 }));
+
 app.use(express.static(path.join(__dirname, 'public')));
 routes(app);
 app.listen(app.get('port'), function() {
