@@ -1,18 +1,23 @@
 <%- include header %>
-<div class="am-g">
-    <div class="am-u-lg-6 am-u-sm-centered">
-        <form method="post" class="am-form">
-            <label for="text">用户名：</label>
-            <input type="text" name="name">
-            <br>
-            <label for="password">密码:</label>
-            <input type="password" name="password">
-            <br>
-            <br />
-            <div class="am-cf">
-            <input type="submit" value="登录" class="am-btn am-btn-primary am-btn-sm am-fl">        
-            </div>
-        </form>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-6">
+             <img src="images/banner2.jpg" width="100%" height="100%" alt="">
+        </div>
+        <div class="col-md-6">
+            <form method="post" class="form-group">
+                <label for="ljz-id">用户名：</label>
+                <input type="text" id="ljz-id" name="name" class="form-control" placeholder="请输入用户名">
+                <br>
+                <label for="ljz-id1">密码:</label>
+                <input type="password" id="ljz-id1" name="password" class="form-control" placeholder="请输入密码">
+                <br>
+                <br />
+                <div class="am-cf">
+                <input type="submit" value="登录" class="btn btn-primary">        
+                </div>
+            </form>
+        </div>
     </div>
 </div>
 <%- include footer %>

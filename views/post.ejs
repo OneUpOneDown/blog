@@ -1,12 +1,24 @@
 <%- include header %>
-<div class="am-g">
-    <div class="am-u-lg-8 am-u-sm-centered">
-        <form method="post" class="am-form">
-        标题:<br/>
-            <input type="text" name="title"><br/>
-            正文:<br/>
-            <textarea name="post" rows="20" cols="90"></textarea><br/>
-            <input type="submit" value="发表" class="am-btn am-btn-primary">
+<div class="container-fluid">
+    <div class="padding">
+        <form method="post" class="form-group">
+        <div class="panel panel-primary">
+            <div class="panel-heading">标题:&nbsp;&nbsp;<input type="text" class="form-controller pading-input" name="title" style="color: #000; border: none; outline: none; padding-left: 15px; border-radius: 20px;"></div>
+            <div style="position:relative">
+                <span style="    position: absolute;
+    left: 16px;
+    top: 17px;">内容:&nbsp;&nbsp;</span> 
+                <textarea name="post" style="width: 100%;
+    min-height: 200px;
+    border: 1px solid #ddd;
+    padding-left: 60px;
+    padding-top: 16px;
+    border: none;
+    outline: none;"></textarea><br/>
+            </div>
+            
+        </div>
+        <input type="submit" class="btn btn-success" value="发表" class="am-btn am-btn-primary">
         </form>
     </div>
 </div>
