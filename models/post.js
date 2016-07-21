@@ -62,6 +62,9 @@ Post.getAll = function(name, callback) {
                 if (err) {
                     return callback(err);
                 }
+                docs.forEach(function (doc) {
+                  doc.post = markdown.toHTML(doc.post);
+                });
                 callback(null, docs);
             });
         });
@@ -91,7 +94,9 @@ Post.getOne = function(name, day, title, callback) {
                     return callback(err);
                 }
                 //解析 markdown 为 html
+            
                 doc.post = markdown.toHTML(doc.post);
+
                 callback(null, doc);//返回查询的一篇文章
             });
         });

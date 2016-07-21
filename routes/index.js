@@ -1,13 +1,26 @@
 var crypto = require('crypto'),
-    User = require('../models/user.js');
+    User = require('../models/user.js'),
     Post = require('../models/post.js');
-    function checkLogin(req, res, next) {
-        if (!req.session.user) {
-            req.flash('error', '未登录~~~'); 
-            res.redirect('/login');
-        }
-        next();
+// 文件上传插件multer
+var multer = require('multer');
+var storage = multer.diskStorage({
+    destination: function (req, file, cb){
+        cb(null, './public/images/user')
+    },
+    filename: function (req, file, cb){
+        cb(null, file.fieldname + '-' + Date.now()+'-'+file.originalname)
     }
+})
+var upload = multer({ storage: storage});
+// var upload = multer({dest: './public/images/user'});
+
+function checkLogin(req, res, next) {
+    if (!req.session.user) {
+        req.flash('error', '未登录~~~'); 
+        res.redirect('/login');
+    }
+    next();
+}
 module.exports = function(app) {
     // app.get('/', function (req, res) {
     //     res.render('index', { title: 'Express' });
@@ -162,6 +175,31 @@ module.exports = function(app) {
             });
         });
     });
+
+    app.get('/upload', checkLogin);
+    app.get('/upload', function (req, res){
+        res.render('upload', {
+            title: '文件上传',
+            user: req.session.user,
+            success: req.flash('success').toString(),
+            error: req.flash('error').toString()
+        });
+    });
+    app.post('/upload', checkLogin);
+    app.post('/upload',upload.fields([
+        {name: 'file1'},
+        {name: 'file2'},
+        {name: 'file3'},
+        {name: 'file4'},
+        {name: 'file5'}
+        ]),function (req, res, next){
+        for(var i in req.files){
+            console.log(req.files[i]);  
+        }
+        req.flash('success', '文件上传成功');
+        res.redirect('/upload');
+    });
+    
 };
 
 // var express = require('express');
