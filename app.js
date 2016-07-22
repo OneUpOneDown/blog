@@ -13,13 +13,21 @@ var MongoStore = require('connect-mongo')(session);
 
 var app = express();
 app.set('port', process.env.PORT || 3000);
-app.set('views', path.join(__dirname, 'views'));
+//设置views文件夹为存放视图文件的目录，即存放模板文件的地方，
+// __dirname为全局变量，存储当前正在执行的脚本所在的目录
+app.set('views', path.join(__dirname, 'views')); 
+// 设置视图模板引擎为ejs
 app.set('view engine', 'ejs');
 app.use(flash());
+// 设置网页favicon小图标
 app.use(favicon(__dirname + '/public/favicon.ico'));
+// 加载日志中间件
 app.use(logger('dev'));
+// 加载解析json中间件
 app.use(bodyParser.json());
+// 加载解析urlencoded请求的中间件
 app.use(bodyParser.urlencoded({ extended: true }));
+// 加载cookie的中间件
 app.use(cookieParser());
 
 //本地mongodb数据库配置
@@ -46,6 +54,8 @@ app.use(session({
 }));
 
 app.use(express.static(path.join(__dirname, 'public')));
+//实现路由功能(路由总接口)
+// routes 为 var routes = require('./routes/index'); index.js中exports出来的方法
 routes(app);
 app.listen(app.get('port'), function() {
 console.log('Express server listening on port ' + app.get('port'));

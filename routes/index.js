@@ -1,6 +1,7 @@
 var crypto = require('crypto'),
     User = require('../models/user.js'),
-    Post = require('../models/post.js');
+    Post = require('../models/post.js'),
+    Comment = require('../models/comment.js');
 // 文件上传插件multer
 var multer = require('multer');
 var storage = multer.diskStorage({
@@ -22,10 +23,10 @@ function checkLogin(req, res, next) {
     next();
 }
 module.exports = function(app) {
-    // app.get('/', function (req, res) {
-    //     res.render('index', { title: 'Express' });
-    // });
-
+    // req:代表请求信息 res:代表响应信息
+    // res.render() 渲染模版，并将其产生的页面直接返回给客户端。它接受两个参
+    // 数，第一个是模板的名称，即 views 目录下的模板文件名，扩展名 .ejs 可选。第二个参数是传递给模板的数据对
+    // 象，用于模板翻译。
     app.get('/', function (req, res) {
         Post.getAll(null, function (err, posts) {
             if (err) {
@@ -175,7 +176,76 @@ module.exports = function(app) {
             });
         });
     });
+    // 留言功能
+    app.post('/u/:name/:day/:title', function (req, res) {
+        var date = new Date(),
+        time = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate() + " " +
+        date.getHours() + ":" + (date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes());
+        var comment = {
+        name: req.body.name,
+        email: req.body.email,
+        website: req.body.website,
+        time: time,
+        content: req.body.content
+        };
+        var newComment = new Comment(req.params.name, req.params.day, req.params.title, comment);
+        newComment.save(function (err) {
+        if (err) {
+        req.flash('error', err);
+        return res.redirect('back');
+        }
+        req.flash('success', '留言成功!');
+        res.redirect('back');
+        });
+    });
 
+    app.get('/edit/:name/:day/:title', checkLogin);
+    app.get('/edit/:name/:day/:title', function (req, res) {
+        var currentUser = req.session.user;
+        Post.edit(currentUser.name, req.params.day, req.params.title, function (err, post) {
+        if (err) {
+        req.flash('error', err);
+        return res.redirect('back');
+        }
+        res.render('edit', {
+        title: '编辑',
+        post: post,
+        user: req.session.user,
+        success: req.flash('success').toString(),
+        error: req.flash('error').toString()
+        });
+        });
+    });
+    app.post('/edit/:name/:day/:title', checkLogin);
+    app.post('/edit/:name/:day/:title', function (req, res) {
+    var currentUser = req.session.user;
+        Post.update(currentUser.name, req.params.day, req.params.title, req.body.post, function (err) {
+        var url = encodeURI('/u/' + req.params.name + '/' + req.params.day + '/' + req.params.title);
+        if (err) {
+        req.flash('error', err);
+        return res.redirect(url);//出错！返回文章页
+        }
+        req.flash('success', '修改成功!');
+        res.redirect(url);//成功！返回文章页
+        });
+    });
+
+    app.get('/remove/:name/:day/:title', checkLogin);
+    app.get('/remove/:name/:day/:title', function (req, res) {
+        var currentUser = req.session.user;
+        Post.remove(currentUser.name, req.params.day, req.params.title, function (err) {
+            if (err) {
+            req.flash('error', err);
+            return res.redirect('back');
+            }
+            req.flash('success', '删除成功!');
+            res.redirect('/');
+        });
+    });
+
+   
+
+    // 文件上传功能
     app.get('/upload', checkLogin);
     app.get('/upload', function (req, res){
         res.render('upload', {
@@ -199,15 +269,5 @@ module.exports = function(app) {
         req.flash('success', '文件上传成功');
         res.redirect('/upload');
     });
-    
 };
 
-// var express = require('express');
-// var router = express.Router();
-
-// /* GET home page. */
-// router.get('/', function(req, res, next) {
-//   res.render('index', { title: 'Express' });
-// });
-
-// module.exports = router;

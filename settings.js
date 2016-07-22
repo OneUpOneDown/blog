@@ -11,11 +11,11 @@
 */
 
 // mongolab 服务器配置
-module.exports = {
-    cookieSecret: 'myblog',
-    url:'mongodb://admin:123456@ds023425.mlab.com:23425/blog'
-};
 // module.exports = {
 //     cookieSecret: 'myblog',
-//     url:'mongodb://localhost:27017/blog'
+//     url:'mongodb://admin:123456@ds023425.mlab.com:23425/blog'
 // };
+module.exports = {
+    cookieSecret: 'myblog',
+    url:'mongodb://localhost:27017/blog'
+};

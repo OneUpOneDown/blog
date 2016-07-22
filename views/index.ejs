@@ -15,10 +15,12 @@
                 </p>
             </div>
             <div class="panel-body">
-                <p style="max-height: 217px; overflow: hidden; display: block;">
+                <div style="max-height: 232px; overflow: hidden; display: block;">
+                    <p>
                    <%- post.post %>
-                </p>
-                <a href="u/<%= post.name %>/<%= post.time.day %>/<%= post.title %>">阅读全文</a>
+                   </p>
+                </div>
+                <a class="read-all edit" href="u/<%= post.name %>/<%= post.time.day %>/<%= post.title %>">阅读全文</a>
             </div>
         </div>
         <% }) %>
