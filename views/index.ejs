@@ -10,8 +10,17 @@
                     </h2>
                 </p>
                 <p class="info">
+                    <a href="/u/<%= post.name %>"><img src="<%= post.head %>" /></a>
                    作者：<a href="u/<%= post.name %>"><%= post.name %></a> |
                    日期：<%= post.time.minute %>
+                   <br />
+                   <br />
+                   标签：
+                   <% post.tags.forEach(function (tag, index) { %>
+                   <% if (tag) { %>
+                   <a class="tag" href="/tags/<%= tag %>"><%= tag %></a>
+                   <% } %>
+                   <% }) %>
                 </p>
             </div>
             <div class="panel-body">
@@ -20,10 +29,12 @@
                    <%- post.post %>
                    </p>
                 </div>
+                <p class="info">阅读：<%= post.pv %> | 评论：<%= post.comments.length %></p>
                 <a class="read-all edit" href="u/<%= post.name %>/<%= post.time.day %>/<%= post.title %>">阅读全文</a>
             </div>
         </div>
         <% }) %>
     </div>
 </div>
+<%- include paging %>
 <%- include footer %>

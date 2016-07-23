@@ -1,0 +1,9 @@
+<br />
+<div>
+<% if (!isFirstPage) { %>
+<span class="pull-left read-all edit"><a style="color:#fff;text-decoration:none;" title="上一页" href="?p=<%= page-1 %>">上一页</a></span>
+<% } %>
+<% if (!isLastPage) { %>
+<span class="pull-right read-all edit"><a style="color:#fff;text-decoration:none;" title="下一页" href="?p=<%= page+1 %>">下一页</a></span>
+<% } %>
+</div>

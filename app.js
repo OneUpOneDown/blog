@@ -57,6 +57,10 @@ app.use(express.static(path.join(__dirname, 'public')));
 //实现路由功能(路由总接口)
 // routes 为 var routes = require('./routes/index'); index.js中exports出来的方法
 routes(app);
+// 增加404页面
+app.use(function (req, res) {
+    res.render("404");
+});
 app.listen(app.get('port'), function() {
 console.log('Express server listening on port ' + app.get('port'));
 });

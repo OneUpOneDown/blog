@@ -10,10 +10,18 @@
             <span><a class="edit" href="/edit/<%= post.name %>/<%= post.time.day %>/<%= post.title %>">编辑</a></span>
             <span><a class="edit" href="/remove/<%= post.name %>/<%= post.time.day %>/<%= post.title %>">删除</a></span>
             <% } %>
+            <br />
+            标签：
+            <% post.tags.forEach(function (tag, index) { %>
+            <% if (tag) { %>
+            <a class="tag" href="/tags/<%= tag %>"><%= tag %></a>
+            <% } %>
+            <% }) %>
         </p>
     </div>
     <div class="panel-body">
         <p><%- post.post %></p>
+        <p class="info">阅读：<%= post.pv %> | 评论：<%= post.comments.length %></p>
     </div>
 </div>
 <%- include comment %>
